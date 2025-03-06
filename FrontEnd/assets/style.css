@@ -1,0 +1,455 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/** end reset css**/
+body {
+	max-width: 1140px;
+	margin:auto;
+	font-family: 'Work Sans' ;
+	font-size: 14px;
+}
+header {
+	display: flex;
+	justify-content: space-between;
+	margin: 50px 0
+}
+section {
+	margin: 50px 0
+}
+
+h1{
+	display: flex;
+	flex-direction: column;
+	font-family: 'Syne';
+	font-size: 22px;
+	font-weight: 800;
+	color: #B1663C
+}
+
+h1 > span {
+	font-family: 'Work Sans';
+	font-size:10px;
+	letter-spacing: 0.1em;
+;
+}
+
+h2{
+	align-items: center;
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 30px;
+	color: #1D6154
+}
+nav ul {
+	display: flex;
+	align-items: center;
+	list-style-type: none;
+
+}
+nav li {
+	padding: 0 10px;
+	font-size: 1.2em;
+}
+
+li:hover {
+	color: #B1663C;
+}
+#introduction {
+	display: flex;
+	align-items: center;
+}
+#introduction figure {
+	flex: 1
+}
+#introduction img {
+	display: block;
+	margin: auto;
+	width: 80%;
+}
+
+#introduction article {
+	flex: 1
+}
+#introduction h2 {
+	margin-bottom: 1em;
+}
+
+#introduction p {
+	margin-bottom: 0.5em;
+}
+#portfolio h2 {
+	text-align: center;
+}
+.gallery {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-column-gap: 20px;
+	grid-row-gap: 20px;
+}
+
+.gallery img {
+	width: 100%;
+
+}
+#contact {
+	width: 50%;
+margin: auto;
+}
+#contact > * {
+	text-align: center;
+
+}
+#contact h2{
+	margin-bottom: 20px;
+}
+#contact form {
+	text-align: left;
+	margin-top:30px;
+	display: flex;
+	flex-direction: column;
+}
+
+#contact input {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+#contact label {
+	margin: 2em 0 1em 0;
+}
+#contact textarea {
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+input[type="submit"]{
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	margin : 2em auto ;
+	width: 180px;
+	text-align: center;
+	border-radius: 60px ;
+}
+
+footer nav ul {
+	display: flex;
+	justify-content: flex-end;
+	margin: 2em
+}
+
+.category-menu {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center; 
+    gap: 10px;
+}
+
+.category-menu button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #1D6154; 
+    cursor: pointer;
+    border-radius: 60px; 
+    font-size: 14px;
+    color: white; 
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.category-menu button.active {
+    background-color: #B1663C;
+    color: white;
+    font-weight: bold;
+}
+
+.category-menu button:hover {
+    background-color: #B1663C;
+    color: white;
+}
+
+.category-menu button:not(.active):hover {
+    background-color: #B1663C;
+    color: white;
+}
+
+main2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    text-align: center;
+    height: 70vh;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Un peu plus d'espacement entre les champs */
+    width: 300px;
+    margin: 0 auto;
+}
+
+label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 4px; /* Un peu plus d'espace sous le label */
+    text-align: left;
+	font-weight: bold;
+}
+
+input {
+    height: 40px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 0 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin-top: 0; /* On enlève l'espace superflu */
+}
+
+button {
+    height: 40px;
+    background-color: #1D6154;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+input::placeholder {
+	color: #999;
+}
+
+
+button:hover {
+	background-color: #B1663C;
+	transform: scale(1.05);
+}
+
+.forgot-password {
+	font-size: 12px;
+	color: #333;
+	text-align: center;
+	margin-top: 10px;
+}
+
+.forgot-password a {
+	color: #1D6154;
+	text-decoration: none;
+}
+
+.forgot-password a:hover {
+	text-decoration: underline;
+}
+
+.edit-btn {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+}
+
+.edit-btn:hover {
+    opacity: 0.7;
+}
+
+.title-container {
+    display: flex;
+    justify-content: center;  /* Centre le contenu horizontalement */
+    align-items: center;      /* Aligne verticalement le titre et le bouton */
+    gap: 10px;                /* Espacement entre le titre et le bouton */
+    width: 100%;              /* S'assure que le conteneur prend toute la largeur disponible */
+    text-align: center;       /* Centre le texte à l'intérieur du conteneur */
+}
+
+.edit-btn {
+    display: flex;            /* Utiliser flex pour aligner l'icône et le texte */
+    align-items: center;      /* Centre l'icône et le texte verticalement */
+    background: none;
+    border: none;
+    font-family: 'Work Sans', sans-serif; /* Assure-toi que c'est la même police */
+    font-size: 16px; /* Taille de police identique à celle des paragraphes */
+    color: inherit; /* Hérite la couleur du texte */
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    outline: none; /* Supprime l'effet de contour au focus */
+    gap: 5px;       /* Espacement entre l'icône et le texte */
+}
+
+/* Enlève l'effet de survol de fond */
+.edit-btn:hover, .edit-btn:focus {
+    background: none;
+    color: inherit; /* Assure-toi que la couleur ne change pas */
+}
+
+/* Style pour l'icône */
+.edit-btn i {
+    font-size: 18px; /* Taille de l'icône */
+    margin-right: 5px; /* Espacement entre l'icône et le texte */
+}
+
+#modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+	padding: 100px;
+}
+
+.modal-content h2 {
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 30px;
+    text-align: center;
+    margin-bottom: 50px;
+	color: black;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.modal-gallery {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    padding: 20px;
+    justify-content: center;
+}
+
+.modal-gallery img {
+    width: 100px;
+    object-fit: cover;
+}
+
+/* Ligne séparatrice sous les images */
+.line-separator {
+    width: 80%;
+    height: 1px;
+    background-color: #B3B3B3;
+    margin: 20px auto; /* Centrer la ligne et ajouter un peu d'espace */
+}
+
+/* Conteneur pour le bouton Ajouter */
+.button-container {
+    display: flex;
+    flex-direction: column; /* Pour empiler la ligne et le bouton */
+    align-items: center; /* Centrer la ligne et le bouton */
+    margin-top: 20px; /* Espacement au-dessus du conteneur */
+}
+
+/* Style du bouton Ajouter */
+.add-btn {
+    padding: 10px 20px;
+    border-radius: 30px;
+    background-color: #1D6154;
+    color: white;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    margin-top: 10px; /* Espacement entre la ligne et le bouton */
+}
+
+.add-btn:hover {
+    background-color: #B1663C;
+}
+
+/* Style pour l'icône de suppression */
+.delete-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    background-color: black;  /* Fond noir pour l'icône */
+    color: white;             /* Couleur de l'icône en blanc */
+    font-size: 17px;          /* Taille de l'icône */
+    padding: 5px;             /* Espacement autour de l'icône */
+    border-radius: 20%;       /* Bord arrondi autour de l'icône */
+    transition: background-color 0.3s ease; /* Ajoute une transition douce pour le changement de couleur */
+}
+
+/* Assure que chaque figure de la galerie modale est en position relative */
+.modal-gallery figure {
+    position: relative;
+}
+
