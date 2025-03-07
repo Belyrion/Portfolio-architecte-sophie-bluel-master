@@ -357,7 +357,7 @@ button:hover {
     align-items: center;
 }
 
-.modal-content {
+.page1 {
     background: white;
     padding: 20px;
     border-radius: 10px;
@@ -370,7 +370,7 @@ button:hover {
 	padding: 100px;
 }
 
-.modal-content h2 {
+.page1 h2 {
     font-family: 'Work Sans';
     font-style: normal;
     font-weight: 400;
@@ -384,9 +384,10 @@ button:hover {
 .close {
     position: absolute;
     top: 10px;
-    right: 15px;
+    right: 10px;
     font-size: 20px;
     cursor: pointer;
+    z-index: 2; /* Assurez-vous que la croix est au-dessus des autres éléments */
 }
 
 .modal-gallery {
@@ -453,3 +454,73 @@ button:hover {
     position: relative;
 }
 
+/* PAGE 2 : Formulaire d'ajout */
+.page2 {
+    display: none; /* Cachée par défaut */
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 50px;
+    width: 400px;
+}
+
+/* Titre de la page 2 */
+.page2 h2 {
+    font-family: 'Work Sans';
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: black;
+}
+
+/* Style du formulaire */
+#addPhotoForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Champs du formulaire */
+#addPhotoForm label {
+    font-size: 16px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#addPhotoForm input {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Bouton de validation */
+#addPhotoForm button {
+    padding: 10px 15px;
+    border-radius: 30px;
+    background-color: #1D6154;
+    color: white;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+}
+
+#addPhotoForm button:hover {
+    background-color: #B1663C;
+}
+
+.back-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #000;  /* La couleur de la flèche */
+    transition: color 0.3s ease;  /* Animation lors du changement de couleur */
+}

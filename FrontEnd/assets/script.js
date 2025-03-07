@@ -50,9 +50,29 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.id = "modal";
     modal.innerHTML = `
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Galerie photo</h2>
-            <div class="modal-gallery"></div>
+            <!-- PAGE 1 : Galerie -->
+            <div class="page1">
+                <span class="close">&times;</span>
+                <h2>Galerie photo</h2>
+                <div class="modal-gallery"></div>
+                <div class="button-container">
+                    <div class="line-separator"></div>
+                    <button class="add-photo-btn">Ajouter une photo</button>
+                </div>
+            </div>
+            <!-- PAGE 2 : Formulaire d'ajout -->
+            <div class="page2" style="display: none;">
+                <i class="fa-solid fa-arrow-left back-icon"></i>
+                <span class="close">&times;</span>
+                <h2>Ajout photo</h2>
+                <form id="addPhotoForm">
+                    <label for="photo">Choisir une image :</label>
+                    <input type="file" id="photo" accept="image/*" required>
+                    <label for="title">Titre :</label>
+                    <input type="text" id="title" required>
+                    <button type="submit">Valider</button>
+                </form>
+            </div>
         </div>
     `;
     document.body.appendChild(modal);
@@ -76,6 +96,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && modal.style.display === "block") {
+            modal.style.display = "none";
+        }
+    });
+
     // Fonction pour charger la galerie du modal
     async function loadModalGallery() {
         try {
@@ -96,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
         galleryContainer.innerHTML = ""; // Vider la galerie avant de la remplir
     
         // Vider la section de la galerie, mais ne pas toucher au bouton et à la ligne
-        const modalContent = document.querySelector(".modal-content");
+        const modalContent = document.querySelector(".page1");
         let buttonContainer = modalContent.querySelector(".button-container");
         
         if (buttonContainer) {
@@ -134,21 +160,26 @@ document.addEventListener("DOMContentLoaded", () => {
                                 'Authorization': `Bearer ${token}` // Si l'utilisateur est connecté
                             }
                         });
+
                         if (!response.ok) {
                             throw new Error('Erreur lors de la suppression de l\'image');
                         }
     
                         // Supprimer l'élément figure de la galerie modale
                         figure.remove();
+
+                        // Supprimer l'image correspondante dans la galerie principale
+                        document.querySelector(`.gallery figure[data-id="${work.id}"]`)?.remove();
+                        
                     } catch (error) {
                         console.error('Erreur :', error);
                     }
                 });
-    
+
                 galleryContainer.appendChild(figure); // Ajouter l'image à la galerie modale
             });
         }
-    
+
         // Ajouter uniquement la ligne et le bouton si ce n'est pas déjà fait
         if (!modalContent.querySelector(".button-container")) {
             // Créer un conteneur pour la ligne et le bouton
@@ -169,7 +200,24 @@ document.addEventListener("DOMContentLoaded", () => {
     
             // Ajouter ce conteneur après la galerie
             galleryContainer.parentElement.appendChild(buttonContainer);
+
+            addButton.addEventListener("click", () => {
+                page1.style.display = "none";
+                page2.style.display = "block";
+            });
         }
+    }
+
+    // Sélection des éléments
+    const page1 = modal.querySelector(".page1");
+    const page2 = modal.querySelector(".page2");
+    const backIcon = modal.querySelector(".back-icon");
+
+    if (backIcon) {
+        backIcon.addEventListener("click", () => {
+            page2.style.display = "none"; // Cacher la page 2
+            page1.style.display = "block"; // Réafficher la page 1
+        });
     }
 
     // Sélectionner la galerie et la section portfolio
@@ -223,17 +271,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // Fonction pour créer un élément figure avec une image et un titre
     function createFigure(work) {
         const figure = document.createElement('figure');
+        figure.setAttribute('data-id', work.id); // Ajout de l'ID dans l'attribut data-id
+    
         const img = document.createElement('img');
+        img.src = work.imageUrl;
+        img.alt = work.title;
+    
         const figcaption = document.createElement('figcaption');
-
-        img.src = work.imageUrl; // Ajouter l'URL de l'image
-        img.alt = work.title; // Ajouter un texte alternatif pour l'image
-        figcaption.textContent = work.title; // Ajouter le titre de l'œuvre
-
-        figure.appendChild(img); // Ajouter l'image à l'élément figure
-        figure.appendChild(figcaption); // Ajouter le titre à l'élément figure
-
-        return figure; // Retourner l'élément figure
+        figcaption.textContent = work.title;
+    
+        figure.appendChild(img);
+        figure.appendChild(figcaption);
+    
+        return figure;
     }
 
     // Fonction pour générer le menu des catégories
