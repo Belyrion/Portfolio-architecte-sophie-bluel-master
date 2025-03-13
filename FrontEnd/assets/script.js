@@ -45,6 +45,32 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Fonction pour charger les catégories dynamiquement
+    async function loadCategories() {
+        try {
+            const response = await fetch('http://localhost:5678/api/categories');
+            if (!response.ok) {
+                throw new Error('Erreur lors de la récupération des catégories.');
+            }
+            const categories = await response.json();
+            
+            const categorySelect = document.getElementById("categorie");
+            categorySelect.innerHTML = '<option value="" disabled selected>Choisissez une catégorie</option>';
+
+            categories.forEach(category => {
+                const option = document.createElement("option");
+                option.value = category.id;
+                option.textContent = category.name;
+                categorySelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Erreur :', error);
+        }
+    }
+    loadCategories();
+
+    
+
     // Modal
     const modal = document.createElement("div");
     modal.id = "modal";
@@ -66,28 +92,91 @@ document.addEventListener("DOMContentLoaded", () => {
                 <span class="close">&times;</span>
                 <h2>Ajout photo</h2>
                 <form id="addPhotoForm">
-                    <label for="photo">Choisir une image :</label>
-                    <input type="file" id="photo" accept="image/*" required>
+                     <!-- Zone de prévisualisation de l'image -->
+                    <div class="photo-upload">
+                        <div class="preview-container">
+                            <img id="imagePreview" src="" alt="Aperçu de l'image" style="display: none;">
+                        </div>
+                        <label for="photo" class="upload-btn">
+                            <i class="fa-solid fa-image"></i>
+                        </label>
+                        <input type="file" id="photo" accept="image/*" required hidden>
+                        <p>jpg, png : 4mo max</p>
+                    </div>
+        
+                    <!-- Champs du formulaire -->
                     <label for="title">Titre :</label>
                     <input type="text" id="title" required>
-                    <button type="submit">Valider</button>
+
+                    <label for="categorie">Catégorie :</label>
+                    <select id="categorie" required>
+                        <option value="" disabled selected>Choisissez une catégorie</option>
+                    </select>
+
+                    <!-- Bouton de validation -->
+                    <div class="line-separator"></div>
+                    <button type="submit" class="submit-btn">Valider</button>
                 </form>
             </div>
         </div>
     `;
     document.body.appendChild(modal);
+    
+     // Prévisualisation de l'image sélectionnée
+     const fileInput = modal.querySelector("#photo");
+     const imagePreview = modal.querySelector("#imagePreview");
+     
+     fileInput.addEventListener("change", (event) => {
+         const file = event.target.files[0];
+         if (file) {
+             const reader = new FileReader();
+             reader.onload = (e) => {
+                 imagePreview.innerHTML = `<img src="${e.target.result}" alt="Aperçu">`;
+             };
+             reader.readAsDataURL(file);
+         }
+     });
+    
+
+    // Fonction pour vérifier si tous les champs du formulaire sont remplis
+    function checkForm() {
+        const form = document.getElementById("addPhotoForm");
+        const title = form.querySelector("#title");
+        const category = form.querySelector("#categorie");
+        const file = form.querySelector("#photo");
+        const submitBtn = form.querySelector(".submit-btn");
+
+        // Vérifier si tous les champs sont remplis
+        if (title.value.trim() !== "" && category.value.trim() !== "" && file.files.length > 0) {
+            submitBtn.disabled = false; // Activer le bouton si tous les champs sont remplis
+        } else {
+            submitBtn.disabled = true; // Désactiver le bouton si un champ est vide
+        }
+    }
+
+    // Ajouter des écouteurs d'événements pour surveiller les modifications des champs
+    document.getElementById("title").addEventListener("input", checkForm);
+    document.getElementById("categorie").addEventListener("change", checkForm);
+    document.getElementById("photo").addEventListener("change", checkForm);
+
+    // Initialement, le bouton est désactivé
+    checkForm();
 
     // Initialement cacher le modal
     modal.style.display = "none"; // Masquer le modal au chargement de la page
 
     // Ajouter un écouteur d'événement au bouton Modifier pour ouvrir le modal
-    const editButton = document.getElementById("editButton");
-    if (editButton) {
-        editButton.addEventListener("click", () => {
-            modal.style.display = "block"; // Afficher le modal au clic sur Modifier
-            loadModalGallery(); // Charger les images dans le modal
-        });
-    }
+const editButton = document.getElementById("editButton");
+if (editButton) {
+    editButton.addEventListener("click", () => {
+        // Réinitialiser l'état de la modale à la page 1 (galerie)
+        page1.style.display = "block"; // Afficher la page 1
+        page2.style.display = "none";  // Cacher la page 2
+        
+        modal.style.display = "block"; // Afficher la modale
+        loadModalGallery(); // Charger les images dans le modal
+    });
+}
 
     // Fermer le modal si on clique sur la croix ou en dehors du modal
     document.addEventListener("click", (event) => {
@@ -101,6 +190,54 @@ document.addEventListener("DOMContentLoaded", () => {
             modal.style.display = "none";
         }
     });
+
+    // Sélectionner le formulaire et ajouter un écouteur d'événement sur la soumission
+    document.getElementById("addPhotoForm").addEventListener("submit", async function (event) {
+        event.preventDefault(); // Empêcher le rechargement de la page
+
+        // Récupération des valeurs des champs
+        const title = document.getElementById("title").value;
+        const category = document.getElementById("categorie").value;
+        const imageFile = document.getElementById("photo").files[0];
+
+        // Vérification si tous les champs sont remplis
+        if (!title || !category || !imageFile) {
+            alert("Veuillez remplir tous les champs !");
+            return;
+        }
+
+        // Création de l'objet FormData pour envoyer les données en multipart/form-data
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("category", category);
+        formData.append("image", imageFile);
+
+        try {
+            const response = await fetch('http://localhost:5678/api/works', {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}` // Ajout du token si nécessaire
+                },
+                body: formData
+            });
+
+        if (!response.ok) {
+            throw new Error("Erreur lors de l'envoi des données.");
+        }
+
+        alert("Photo ajoutée avec succès !");
+        document.querySelector(".page2").style.display = "none"; // Fermer la page 2
+        document.querySelector(".page1").style.display = "block"; // Revenir à la galerie
+        loadModalGallery(); // Recharger la galerie pour afficher la nouvelle image
+        loadGallery();
+        modal.style.display = "none";
+
+        } catch (error) {
+            console.error("Erreur :", error);
+            alert("Une erreur est survenue lors de l'ajout de la photo.");
+        }
+    });
+    
 
     // Fonction pour charger la galerie du modal
     async function loadModalGallery() {
@@ -204,6 +341,21 @@ document.addEventListener("DOMContentLoaded", () => {
             addButton.addEventListener("click", () => {
                 page1.style.display = "none";
                 page2.style.display = "block";
+
+                // Réinitialiser le formulaire
+                const form = document.getElementById("addPhotoForm");
+                form.reset(); // Réinitialiser le formulaire
+
+                // Cacher la prévisualisation de l'image
+                const imagePreview = modal.querySelector("#imagePreview");
+                imagePreview.style.display = "none"; // Masquer l'aperçu de l'image
+
+                // Désactiver le bouton "Valider" au départ
+                const submitBtn = form.querySelector(".submit-btn");
+                submitBtn.disabled = true;
+
+                // Vérifier à nouveau l'état du formulaire
+                checkForm(); // Vérifie les champs du formulaire et active ou désactive le bouton "Valider"
             });
         }
     }
