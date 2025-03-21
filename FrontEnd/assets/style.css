@@ -454,67 +454,6 @@ button:hover {
     position: relative;
 }
 
-/* PAGE 2 : Formulaire d'ajout */
-.page2 {
-    display: none; /* Cachée par défaut */
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 50px;
-    width: 400px;
-}
-
-/* Titre de la page 2 */
-.page2 h2 {
-    font-family: 'Work Sans';
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: black;
-}
-
-/* Style du formulaire */
-#addPhotoForm {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Champs du formulaire */
-#addPhotoForm label {
-    font-size: 16px;
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-#addPhotoForm input {
-    width: 100%;
-    padding: 8px;
-    margin: 5px 0 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* Bouton de validation */
-#addPhotoForm button {
-    padding: 10px 15px;
-    border-radius: 30px;
-    background-color: #1D6154;
-    color: white;
-    cursor: pointer;
-    border: none;
-    font-size: 16px;
-}
-
-#addPhotoForm button:hover {
-    background-color: #B1663C;
-}
-
 .back-icon {
     position: absolute;
     top: 10px;
@@ -534,7 +473,7 @@ button:hover {
 .page2 {
     display: none; /* Cachée par défaut */
     background: white;
-    padding: 100px;
+    padding: 100px; /* Réduit un peu le padding pour plus de cohérence avec page1 */
     border-radius: 10px;
     text-align: center;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
@@ -542,9 +481,9 @@ button:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%; /* Prend toute la largeur disponible */
-    max-width: 420px; /* Limite la largeur à 420px */
-    height: auto; /* Ajuste la hauteur automatiquement pour le contenu */
+    width: 400px; /* Assure une largeur similaire à page1 */
+    max-width: 100%; /* Assure que la page ne dépasse pas la largeur de l'écran */
+    height: auto; /* Laisse la hauteur s'ajuster en fonction du contenu */
 }
 
 .page2 h2 {
@@ -574,11 +513,12 @@ button:hover {
 }
 
 #addPhotoForm input {
-    width: 100%; /* Prend toute la largeur disponible */
-    padding: 8px;
-    margin: 5px 0 15px;
-    border: 1px solid #ccc;
+    width: 398px; /* Prend toute la largeur disponible */
+    margin: 0;
+    border: 0px solid #ccc;
     border-radius: 5px;
+    height: 51px;
+    box-shadow: 0px 4px 14px 0px #00000017;
 }
 
 /* Bouton de validation */
@@ -593,12 +533,15 @@ button:hover {
 }
 
 #addPhotoForm select {
-    width: 100%; /* Prend toute la largeur de son parent */
+    width: 420px; /* Prend toute la largeur de son parent */
     padding: 8px;
-    margin: 5px 0 15px;
-    border: 1px solid #ccc;
+    margin: 0;
+    border: 0px solid #ccc;
     border-radius: 5px;
     max-width: 420px; /* Limite à 420px */
+    height: 51px;
+    box-shadow: 0px 4px 14px 0px #00000017;
+
 }
 
 #addPhotoForm button:hover {
@@ -619,3 +562,54 @@ button:hover {
     background-color: #B3B3B3;
     margin: 20px auto;
 }
+
+#imagePreview {
+    max-width: 100%;
+    max-height: 169px;
+    object-fit: contain; /* Assure que l'image reste dans les limites sans déformation */
+    
+}
+
+.photo-upload #addPhotoButton {
+    padding: 10px 15px;
+    border-radius: 30px;
+    background-color: #CBD6DC;
+    color: #306685;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+}
+
+.photo-upload #addPhotoButton:hover {
+    background-color: #CBD6DC;
+}
+
+.photo-upload {
+    display: flex;
+    flex-direction: column;
+    background-color: #E8F1F6;
+    width: 420px;
+    height: 169px;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.photo-upload p {
+    font-size: 10px;
+    margin: 5px;
+}
+
+/* Sélecteur de base */
+#categorie {
+    -webkit-appearance: none;  /* Supprime le style natif de la flèche sur Safari et Chrome */
+    -moz-appearance: none;     /* Supprime le style natif de la flèche sur Firefox */
+    appearance: none;          /* Supprime le style natif de la flèche sur tous les navigateurs */
+    padding-right: 30px;       /* Ajoute de l'espace à droite pour la flèche */
+    background-color: white;   /* Fond blanc */
+    border: 1px solid #ccc;    /* Bordure légère */
+    border-radius: 4px;        /* Coins arrondis */
+    font-size: 16px;           /* Taille du texte */
+    color: #333;               /* Couleur du texte */
+    cursor: pointer;
+    position: relative;        /* Nécessaire pour placer la flèche */
+  }

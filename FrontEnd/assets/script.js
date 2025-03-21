@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const categories = await response.json();
             
             const categorySelect = document.getElementById("categorie");
-            categorySelect.innerHTML = '<option value="" disabled selected>Choisissez une catégorie</option>';
+            categorySelect.innerHTML = '<option value="" disabled selected></option>';
 
             categories.forEach(category => {
                 const option = document.createElement("option");
@@ -92,15 +92,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 <span class="close">&times;</span>
                 <h2>Ajout photo</h2>
                 <form id="addPhotoForm">
-                     <!-- Zone de prévisualisation de l'image -->
                     <div class="photo-upload">
+                        <!-- Zone de prévisualisation de l'image -->
                         <div class="preview-container">
                             <img id="imagePreview" src="" alt="Aperçu de l'image" style="display: none;">
+                            <!-- Icône SVG par défaut -->
+                            <svg id="defaultIcon" width="76" height="76" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M63.5517 15.8879C64.7228 15.8879 65.681 16.8461 65.681 18.0172V60.5768L65.0156 59.7118L46.9165 36.2894C46.3176 35.5042 45.3727 35.0517 44.3879 35.0517C43.4031 35.0517 42.4715 35.5042 41.8594 36.2894L30.8136 50.5824L26.7546 44.8998C26.1557 44.0614 25.1975 43.569 24.1595 43.569C23.1214 43.569 22.1632 44.0614 21.5644 44.9131L10.9178 59.8183L10.319 60.6434V60.6034V18.0172C10.319 16.8461 11.2772 15.8879 12.4483 15.8879H63.5517ZM12.4483 9.5C7.75048 9.5 3.93103 13.3195 3.93103 18.0172V60.6034C3.93103 65.3012 7.75048 69.1207 12.4483 69.1207H63.5517C68.2495 69.1207 72.069 65.3012 72.069 60.6034V18.0172C72.069 13.3195 68.2495 9.5 63.5517 9.5H12.4483ZM23.0948 35.0517C23.9337 35.0517 24.7644 34.8865 25.5394 34.5655C26.3144 34.2444 27.0186 33.7739 27.6118 33.1807C28.2049 32.5876 28.6755 31.8834 28.9965 31.1083C29.3175 30.3333 29.4828 29.5027 29.4828 28.6638C29.4828 27.8249 29.3175 26.9943 28.9965 26.2192C28.6755 25.4442 28.2049 24.74 27.6118 24.1468C27.0186 23.5537 26.3144 23.0831 25.5394 22.7621C24.7644 22.4411 23.9337 22.2759 23.0948 22.2759C22.2559 22.2759 21.4253 22.4411 20.6503 22.7621C19.8752 23.0831 19.171 23.5537 18.5779 24.1468C17.9847 24.74 17.5142 25.4442 17.1931 26.2192C16.8721 26.9943 16.7069 27.8249 16.7069 28.6638C16.7069 29.5027 16.8721 30.3333 17.1931 31.1083C17.5142 31.8834 17.9847 32.5876 18.5779 33.1807C19.171 33.7739 19.8752 34.2444 20.6503 34.5655C21.4253 34.8865 22.2559 35.0517 23.0948 35.0517Z" fill="#B9C5CC"/>
+                            </svg>
                         </div>
-                        <label for="photo" class="upload-btn">
-                            <i class="fa-solid fa-image"></i>
-                        </label>
+
+                        <!-- Bouton "Ajouter Photo" -->
+                        <button type="button" id="addPhotoButton" class="upload-btn">
+                            + Ajouter Photo
+                        </button>
                         <input type="file" id="photo" accept="image/*" required hidden>
+
+                        <!-- Texte explicatif -->
                         <p>jpg, png : 4mo max</p>
                     </div>
         
@@ -110,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     <label for="categorie">Catégorie :</label>
                     <select id="categorie" required>
-                        <option value="" disabled selected>Choisissez une catégorie</option>
+                        <option value="" disabled selected></option>
                     </select>
 
                     <!-- Bouton de validation -->
@@ -121,21 +129,43 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
     `;
     document.body.appendChild(modal);
+
+    // Prévisualisation de l'image sélectionnée
+    const fileInput = modal.querySelector("#photo");
+    const imagePreview = modal.querySelector("#imagePreview");
+    const defaultIcon = document.getElementById('defaultIcon');
+    const addPhotoButton = document.getElementById('addPhotoButton');
     
-     // Prévisualisation de l'image sélectionnée
-     const fileInput = modal.querySelector("#photo");
-     const imagePreview = modal.querySelector("#imagePreview");
-     
-     fileInput.addEventListener("change", (event) => {
-         const file = event.target.files[0];
-         if (file) {
-             const reader = new FileReader();
-             reader.onload = (e) => {
-                 imagePreview.innerHTML = `<img src="${e.target.result}" alt="Aperçu">`;
-             };
-             reader.readAsDataURL(file);
-         }
-     });
+    // Fonction pour déclencher l'input file lorsqu'on clique sur le bouton
+    addPhotoButton.addEventListener('click', function() {
+        fileInput.click();  // Cela ouvre la fenêtre pour sélectionner un fichier
+    });
+
+     // Gestion de l'événement de sélection de fichier
+    fileInput.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+         // Si un fichier est sélectionné et c'est une image
+    if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        
+        // Lorsque l'image est chargée, on l'affiche en prévisualisation
+        reader.onload = function(e) {
+            // Afficher l'image
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block'; // Affiche l'image
+            defaultIcon.style.display = 'none'; // Masque l'icône par défaut
+            addPhotoButton.style.display = 'none'; // Masque le bouton "Ajouter Photo"
+        };
+        
+        // Lire le fichier comme une URL de données (pour l'affichage)
+        reader.readAsDataURL(file);
+    } else {
+        // Si aucun fichier ou un fichier invalide est sélectionné, masquer l'image et afficher l'icône
+        imagePreview.style.display = 'none';
+        defaultIcon.style.display = 'block';
+        addPhotoButton.style.display = 'block'; // Affiche le bouton "Ajouter Photo"
+    }
+});
     
 
     // Fonction pour vérifier si tous les champs du formulaire sont remplis
@@ -166,17 +196,17 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.style.display = "none"; // Masquer le modal au chargement de la page
 
     // Ajouter un écouteur d'événement au bouton Modifier pour ouvrir le modal
-const editButton = document.getElementById("editButton");
-if (editButton) {
-    editButton.addEventListener("click", () => {
-        // Réinitialiser l'état de la modale à la page 1 (galerie)
-        page1.style.display = "block"; // Afficher la page 1
-        page2.style.display = "none";  // Cacher la page 2
+    const editButton = document.getElementById("editButton");
+    if (editButton) {
+        editButton.addEventListener("click", () => {
+            // Réinitialiser l'état de la modale à la page 1 (galerie)
+            page1.style.display = "block"; // Afficher la page 1
+            page2.style.display = "none";  // Cacher la page 2
         
-        modal.style.display = "block"; // Afficher la modale
-        loadModalGallery(); // Charger les images dans le modal
-    });
-}
+            modal.style.display = "block"; // Afficher la modale
+            loadModalGallery(); // Charger les images dans le modal
+        });
+    }
 
     // Fermer le modal si on clique sur la croix ou en dehors du modal
     document.addEventListener("click", (event) => {
@@ -341,19 +371,28 @@ if (editButton) {
             addButton.addEventListener("click", () => {
                 page1.style.display = "none";
                 page2.style.display = "block";
-
+            
                 // Réinitialiser le formulaire
                 const form = document.getElementById("addPhotoForm");
                 form.reset(); // Réinitialiser le formulaire
-
+            
                 // Cacher la prévisualisation de l'image
                 const imagePreview = modal.querySelector("#imagePreview");
                 imagePreview.style.display = "none"; // Masquer l'aperçu de l'image
-
+                imagePreview.src = ""; // Effacer l'aperçu précédent
+            
+                // Réinitialiser l'icône par défaut
+                const defaultIcon = document.getElementById('defaultIcon');
+                defaultIcon.style.display = 'block'; // Afficher l'icône par défaut
+            
+                // Réinitialiser le bouton "Ajouter Photo"
+                const addPhotoButton = document.getElementById('addPhotoButton');
+                addPhotoButton.style.display = 'block'; // Afficher à nouveau le bouton
+            
                 // Désactiver le bouton "Valider" au départ
                 const submitBtn = form.querySelector(".submit-btn");
                 submitBtn.disabled = true;
-
+            
                 // Vérifier à nouveau l'état du formulaire
                 checkForm(); // Vérifie les champs du formulaire et active ou désactive le bouton "Valider"
             });
@@ -381,7 +420,7 @@ if (editButton) {
     const portfolioSection = document.querySelector('#portfolio');
     portfolioSection.insertBefore(categoryMenuElement, galleryElement);
 
-    // Fonction pour charger les éléments de la galerie
+    // 1 - Récupération et affichage des projets
     async function loadGallery(categoryId = "all") {
         try {
             const response = await fetch('http://localhost:5678/api/works');
@@ -411,7 +450,7 @@ if (editButton) {
     }
     
 
-    // Fonction pour afficher les œuvres dans la galerie
+    // 1 - Affichage dynamique dans la galerie
     function displayWorks(works) {
         galleryElement.innerHTML = ''; // Vider la galerie avant d'y ajouter les nouvelles œuvres
         works.forEach(work => {
