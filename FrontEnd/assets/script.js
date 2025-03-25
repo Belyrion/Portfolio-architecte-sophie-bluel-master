@@ -142,30 +142,38 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
      // Gestion de l'événement de sélection de fichier
-    fileInput.addEventListener('change', function(event) {
-    const file = event.target.files[0];
-         // Si un fichier est sélectionné et c'est une image
-    if (file && file.type.startsWith('image/')) {
+     fileInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+    
+        // Vérifier si un fichier a été sélectionné
+        if (!file) return;
+    
+        // Vérifier le type de fichier (jpg et png uniquement)
+        const validTypes = ["image/jpeg", "image/png"];
+        if (!validTypes.includes(file.type)) {
+            alert("Seuls les fichiers JPG et PNG sont autorisés.");
+            fileInput.value = ""; // Réinitialise l'input
+            return;
+        }
+    
+        // Vérifier la taille du fichier (max 4 Mo)
+        const maxSize = 4 * 1024 * 1024; // 4 Mo en octets
+        if (file.size > maxSize) {
+            alert("La taille du fichier ne doit pas dépasser 4 Mo.");
+            fileInput.value = ""; // Réinitialise l'input
+            return;
+        }
+    
+        // Lire et afficher l'image si toutes les conditions sont respectées
         const reader = new FileReader();
-        
-        // Lorsque l'image est chargée, on l'affiche en prévisualisation
         reader.onload = function(e) {
-            // Afficher l'image
             imagePreview.src = e.target.result;
             imagePreview.style.display = 'block'; // Affiche l'image
             defaultIcon.style.display = 'none'; // Masque l'icône par défaut
             addPhotoButton.style.display = 'none'; // Masque le bouton "Ajouter Photo"
         };
-        
-        // Lire le fichier comme une URL de données (pour l'affichage)
         reader.readAsDataURL(file);
-    } else {
-        // Si aucun fichier ou un fichier invalide est sélectionné, masquer l'image et afficher l'icône
-        imagePreview.style.display = 'none';
-        defaultIcon.style.display = 'block';
-        addPhotoButton.style.display = 'block'; // Affiche le bouton "Ajouter Photo"
-    }
-});
+    });
     
 
     // Fonction pour vérifier si tous les champs du formulaire sont remplis
